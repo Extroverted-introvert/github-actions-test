@@ -3,7 +3,10 @@ name: Hello World on Push
 on:
   push:
     branches:
-      - action-hello 
+      - action-hello
+  pull_request:
+    branches:
+      - main
 jobs:
   hello-world:
     runs-on: ubuntu-latest
