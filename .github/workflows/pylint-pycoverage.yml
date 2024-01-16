@@ -33,14 +33,25 @@ jobs:
             pip install -r requirements.txt
 
         - name: Test with pytest
+          run:
+            pytest tests/test_calculator.py --doctest-modules --junitxml=junit/test-results.xml
+
+        - name: Check Coverage with Pycove
           run: |
-              pip install pytest pytest-cov
-              pytest tests/test_calculator.py --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
-        
+            coverage run -m pytest ./tests/test_calculator.py
+            coverage html
+
         - name: Upload pytest test results
           uses: actions/upload-artifact@v3
           with:
             name: pytest-results-ver1
             path: junit/test-results.xml
+          if: ${{ always() }}
+        
+        - name: Upload pycoverage test results
+          uses: actions/upload-artifact@v3
+          with:
+            name: pycoverage-results-ver1
+            path: htmlcov/
           if: ${{ always() }}
 
